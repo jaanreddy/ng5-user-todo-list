@@ -1,20 +1,70 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<div class="container">
+    <h1>
+        User Todo List
+    </h1>
+    <form [formGroup]="userFormGroup" novalidate (ngSubmit)="onSubmit()">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="uname">Name</label>
+                <input type="text" class="form-control" formControlName="name" id="uname" placeholder="Name" required [ngClass]="{
+                    'has-danger': userFormGroup.get('name').invalid && (userFormGroup.get('name').dirty || userFormGroup.get('name').touched),
+                    'has-success': userFormGroup.get('name').valid && (userFormGroup.get('name').dirty || userFormGroup.get('name').touched)
+                  }">
+                <div class="form-control-feedback" *ngIf="userFormGroup.get('name').errors && (userFormGroup.get('name').dirty || userFormGroup.get('name').touched)">
+                    <span *ngIf="userFormGroup.get('name').errors.required">Name is required</span>
+                    <span *ngIf="userFormGroup.get('name').errors.minlength">Name should contain min 3 chars</span>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="uemail">Email</label>
+                <input type="email" class="form-control" id="uemail" formControlName="email" placeholder="Email" required [ngClass]="{
+                    'has-danger': userFormGroup.get('email').invalid && (userFormGroup.get('email').dirty ||  userFormGroup.get('email').touched),
+                    'has-success': userFormGroup.get('email').valid && (userFormGroup.get('email').dirty ||  userFormGroup.get('email').touched)
+                  }">
+                <div class="form-control-feedback" *ngIf="userFormGroup.get('email').errors && (userFormGroup.get('email').dirty || userFormGroup.get('email').touched)">
+                    <span *ngIf="userFormGroup.get('email').errors.required">Email is required</span>
+                    <span *ngIf="userFormGroup.get('email').errors.pattern">Enter valid email address</span>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="uphone">Phone</label>
+                <input type="number" class="form-control" id="uphone" formControlName="phone" placeholder="Phone" required [ngClass]="{
+                    'has-danger': userFormGroup.get('phone').invalid && (userFormGroup.get('phone').dirty || userFormGroup.get('phone').touched),
+                    'has-success': userFormGroup.get('phone').valid && (userFormGroup.get('phone').dirty || userFormGroup.get('phone').touched)
+                  }">
+                <div class="form-control-feedback" *ngIf="userFormGroup.get('phone').errors && (userFormGroup.get('phone').dirty || userFormGroup.get('phone').touched)">
+                    <span *ngIf="userFormGroup.get('phone').errors.required">Phone is required</span>
+                    <span *ngIf="userFormGroup.get('phone').errors.min || userFormGroup.get('phone').errors.max">Phone should contain 10 numbers</span>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">{{isUpdate?'Save':'Add User'}}</button>
+        <button type="reset" class="btn btn-default" *ngIf="isUpdate" (click)="onReset()">Cancel</button>
+    </form>
+    <div class="userListWpr" *ngIf="userList.length>0; else nodata" style="margin-top:20px;">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of userList; let i= index;">
+                    <td>{{user.name}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.phone}}</td>
+                    <td>
+                        <a href="javascript:void(0);" (click)="updateUser(i)">Edit</a>
+                        <a href="javascript:void(0);" (click)="deleteUser(i)">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <ng-template #nodata>
+        <h4 style="text-align:center;">User data not found</h4>
+    </ng-template>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
-
